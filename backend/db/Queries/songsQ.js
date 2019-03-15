@@ -59,4 +59,47 @@ const deleteSong = (req, res, next) => {
     });
 };
 
-module.exports = { getAllSongs, getOneSong, postSong, deleteSong };
+const getSongByGenre = (req, res, next) => {
+  let genId = parseInt(req.params.id);
+  db.any(
+    "SELECT songs.id, img_url, title, genre_name FROM songs JOIN genres ON  songs.genre_id = genres.id WHERE genres.id = $1 GROUP BY songs.id, img_url, title, genre_name",
+    [genId]
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "THE GENRE IS!"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
+const getSongsByUsers = (req, res, next) => {
+  let userId = parseInt(req.params.id);
+  db.any(
+    "SELECT songs.id, img_url, title, username FROM songs JOIN users ON  songs.user_id = users.id WHERE users.id = 1 GROUP BY songs.id, img_url, title, username",
+    [userId]
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "THEY POSTED WHAT?!"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
+module.exports = {
+  getAllSongs,
+  getOneSong,
+  postSong,
+  deleteSong,
+  getSongByGenre,
+  getSongsByUsers
+};

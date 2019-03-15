@@ -61,4 +61,28 @@ const editComment = (req, res) => {
   });
 };
 
-module.exports = { getAllComments, postComment, deleteComment, editComment };
+const getAllCommentsForOneSong = (req, res, next) => {
+  let comId = parseInt(req.params.id);
+  db.one(
+    "SELECT songs.id, img_url, title, array_agg(DISTINCT comments.comment_body) AS comments FROM comments JOIN songs ON  songs.id = comments.songcom_id WHERE songs.id = $1 GROUP BY songs.id, img_url, title",
+    [comId]
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "COMMENT WHAT!"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
+module.exports = {
+  getAllComments,
+  postComment,
+  deleteComment,
+  editComment,
+  getAllCommentsForOneSong
+};

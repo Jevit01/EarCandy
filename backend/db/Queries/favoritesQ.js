@@ -44,4 +44,44 @@ const deleteFavorite = (req, res, next) => {
     });
 };
 
-module.exports = { getAllFavorites, postFavorite, deleteFavorite };
+const getAllFavoritesForOneUser = (req, res, next) => {
+  let userId = parseInt(req.params.id);
+  db.any("SELECT userfav_id, songfav_id FROM favorites WHERE userfav_id = $1", [
+    userId
+  ])
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "YOU GOT THEIR FAVS"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
+const getAllFavoritesForOneSong = (req, res, next) => {
+  let userId = parseInt(req.params.id);
+  db.any("SELECT userfav_id, songfav_id FROM favorites WHERE songfav_id = $1", [
+    userId
+  ])
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "YOU GOT FAVS FOR ONE"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
+module.exports = {
+  getAllFavorites,
+  postFavorite,
+  deleteFavorite,
+  getAllFavoritesForOneUser,
+  getAllFavoritesForOneSong
+};
