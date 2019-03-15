@@ -1,0 +1,19 @@
+{
+  "name": "WebFinalExam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently --kill-others \"cd frontend && npm start\" \"cd backend && npm start\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {},
+  "bugs": {},
+  "homepage": "",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
+}
