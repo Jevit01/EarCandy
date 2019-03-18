@@ -4,17 +4,27 @@ const axios = require("axios");
 class Songs extends Component {
   state = {
     songs: [],
-    input: ""
+    input: "",
+    favs: []
   };
 
   componentDidMount() {
     this.getSongs();
+    this.getFavs();
   }
 
   getSongs = () => {
     axios.get("/songs/").then(songs => {
       this.setState({
         songs: songs.data.data
+      });
+    });
+  };
+
+  getFavs = () => {
+    axios.get("/").then(fav => {
+      this.setState({
+        favs: fav.data.data
       });
     });
   };

@@ -29,6 +29,22 @@ const getAllSongs = (req, res, next) => {
     });
 };
 
+const getAllSongsFavsAndComs = (req, res, next) => {
+  db.any(
+    "SELECT COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments FROM songs JOIN favorites ON songfav_id = songs.id JOIN comments ON songcom_id = songs.id GROUP BY songfav_id, title, img_url"
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "YOU GOT IT ALL"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
 const postSong = (req, res, next) => {
   db.none(
     "INSERT INTO songs (title, img_url, user_id, genre_id) VALUES (${title}, ${img_url}, ${user_id}, ${genre_id})",
@@ -101,5 +117,6 @@ module.exports = {
   postSong,
   deleteSong,
   getSongByGenre,
-  getSongsByUsers
+  getSongsByUsers,
+  getAllSongsFavsAndComs
 };
