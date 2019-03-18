@@ -4,27 +4,17 @@ const axios = require("axios");
 class Songs extends Component {
   state = {
     songs: [],
-    input: "",
-    favs: []
+    input: ""
   };
 
   componentDidMount() {
     this.getSongs();
-    this.getFavs();
   }
 
   getSongs = () => {
-    axios.get("/songs/").then(songs => {
+    axios.get("/songs/info").then(songs => {
       this.setState({
         songs: songs.data.data
-      });
-    });
-  };
-
-  getFavs = () => {
-    axios.get("/").then(fav => {
-      this.setState({
-        favs: fav.data.data
       });
     });
   };
@@ -50,7 +40,12 @@ class Songs extends Component {
         return (
           <div className="songDisplay">
             <img className="albumCover" src={res.img_url} alt="" />
-            <h3>{res.title}</h3>
+            <h3 className="title">{res.title}</h3>
+            <p className="totalFav">{res.total}</p>
+            <button className="Fav">Favorite</button>
+            <ul>
+              <li>{res.comments}</li>
+            </ul>
           </div>
         );
       } else {
