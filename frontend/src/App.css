@@ -16,3 +16,43 @@
   justify-content: flex-end;
   width: 500px;
 }
+
+.songDisplay {
+  display: grid;
+  grid-template-columns: 10% 50% 5%;
+  grid-template-rows: 40% 40% 20% 20%;
+}
+
+.albumCover {
+  height: 75px;
+  width: 75px;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.titleBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  grid-column: 2;
+  grid-row: 1;
+  padding-right: 5px;
+}
+
+.fav {
+  grid-column: 3;
+  grid-row: 1;
+  height: 20px;
+  align-items: center;
+}
+
+.favButton {
+  margin-top: 13px;
+}
+
+.coms {
+  grid-column: 2;
+  grid-row: 2;
+  overflow: scroll;
+  word-wrap: normal;
+}

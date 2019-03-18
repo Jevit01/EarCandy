@@ -34,17 +34,24 @@ class Songs extends Component {
 
   render() {
     let songs = this.state.songs.map(res => {
+      let com = res.comments.forEach(el => {
+        return el;
+      });
       if (
         res.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
       ) {
         return (
           <div className="songDisplay">
             <img className="albumCover" src={res.img_url} alt="" />
-            <h3 className="title">{res.title}</h3>
-            <p className="totalFav">{res.total}</p>
-            <button className="Fav">Favorite</button>
-            <ul>
-              <li>{res.comments}</li>
+            <div className="titleBar">
+              <h3 className="title">{res.title}</h3>
+              <p className="totalFav">{res.total}</p>
+            </div>
+            <div className="favButton">
+              <button className="fav">Favorite</button>
+            </div>
+            <ul className="coms">
+              <li>{com}</li>
             </ul>
           </div>
         );
@@ -64,6 +71,7 @@ class Songs extends Component {
           />
           <input type="submit" value="Search By Title" />
         </form>
+        <br />
         <div>{songs}</div>
       </>
     );
