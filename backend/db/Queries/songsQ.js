@@ -96,7 +96,7 @@ const getSongByGenre = (req, res, next) => {
 const getSongsByUsers = (req, res, next) => {
   let userId = parseInt(req.params.id);
   db.any(
-    "SELECT songs.id, img_url, title, username FROM songs JOIN users ON  songs.user_id = users.id WHERE users.id = 1 GROUP BY songs.id, img_url, title, username",
+    "SELECT songs.id, img_url, title, username FROM songs JOIN users ON  songs.user_id = users.id WHERE users.id = $1 GROUP BY songs.id, img_url, title, username",
     [userId]
   )
     .then(data => {
@@ -111,6 +111,22 @@ const getSongsByUsers = (req, res, next) => {
     });
 };
 
+const getSongsForSampleUser = (req, res, next) => {
+  db.any(
+    "SELECT username, users.id, COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments FROM songs JOIN favorites ON songfav_id = songs.id JOIN comments ON songcom_id = songs.id JOIN users ON users.id = songs.user_id WHERE users.id = 1 GROUP BY username, users.id , songfav_id, title, img_url"
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "SAMPLE USER?!"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
 module.exports = {
   getAllSongs,
   getOneSong,
@@ -118,5 +134,6 @@ module.exports = {
   deleteSong,
   getSongByGenre,
   getSongsByUsers,
-  getAllSongsFavsAndComs
+  getAllSongsFavsAndComs,
+  getSongsForSampleUser
 };

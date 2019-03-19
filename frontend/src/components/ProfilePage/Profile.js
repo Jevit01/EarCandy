@@ -11,7 +11,7 @@ class Profile extends Component {
   }
 
   getUsersSongs = () => {
-    axios.get("/users/:id").then(songs => {
+    axios.get("/songs/sample").then(songs => {
       this.setState({
         songs: songs.data.data
       });
@@ -26,30 +26,35 @@ class Profile extends Component {
             <li>{data}</li>
           </>
         );
-      })
-        return (
-          <div className="songDisplay">
-            <img className="albumCover" src={res.img_url} alt="" />
-            <div className="titleBar">
-              <h3 className="title">{res.title}</h3>
-              <p className="totalFav">{res.total}</p>
-            </div>
-            <div className="favButton">
-              <button className="fav">Favorite</button>
-            </div>
-            <div className="coms">
-              <ul>{com}</ul>
-            </div>
+      });
+      return (
+        <div className="songDisplay">
+          <img className="albumCover" src={res.img_url} alt="" />
+          <div className="titleBar">
+            <h3 className="title">{res.title}</h3>
+            <p className="totalFav">{res.total}</p>
           </div>
-        )
-    })
+          <div className="favButton">
+            <button className="fav">Favorite</button>
+          </div>
+          <div className="coms">
+            <ul>{com}</ul>
+          </div>
+        </div>
+      );
+    });
+    let name = this.state.songs.map(res => {
+      return res.username;
+    });
     return (
       <>
+        <h2>{name}</h2>
         <br />
         <div>{songs}</div>
         <br />
       </>
-    )
+    );
+  }
 }
 
 export default Profile;

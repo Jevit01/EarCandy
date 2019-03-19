@@ -7,12 +7,14 @@ const {
   deleteSong,
   getSongByGenre,
   getSongsByUsers,
-  getAllSongsFavsAndComs
+  getAllSongsFavsAndComs,
+  getSongsForSampleUser
 } = require("../db/Queries/songsQ.js");
 
 router.get("/", getAllSongs);
 router.post("/", postSong);
 router.get("/info", getAllSongsFavsAndComs);
+router.get("/sample", getSongsForSampleUser);
 router.get("/:id", getOneSong);
 router.delete("/:id", deleteSong);
 router.get("/genres/:id", getSongByGenre);
