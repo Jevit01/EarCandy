@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./components/HomePage/Home.js";
 import Songs from "./components/SongsPage/Songs.js";
 import NavBar from "./components/NavBar.js";
+import Profile from "./components/ProfilePage/Profile.js";
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/songs" component={Songs} />
+          <Route path="/myprofile" component={Profile} />
         </Switch>
       </div>
     );

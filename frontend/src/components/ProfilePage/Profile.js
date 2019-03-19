@@ -1,34 +1,20 @@
 import React, { Component } from "react";
 const axios = require("axios");
 
-class Songs extends Component {
+class Profile extends Component {
   state = {
-    songs: [],
-    input: ""
+    songs: []
   };
 
   componentDidMount() {
-    this.getSongs();
+    this.getUsersSongs();
   }
 
-  getSongs = () => {
-    axios.get("/songs/info").then(songs => {
+  getUsersSongs = () => {
+    axios.get("/users/:id").then(songs => {
       this.setState({
         songs: songs.data.data
       });
-    });
-  };
-
-  handleChange = e => {
-    this.setState({ input: e.target.value });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.state.songs.find(song => {
-      return (
-        song.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
-      );
     });
   };
 
@@ -40,10 +26,7 @@ class Songs extends Component {
             <li>{data}</li>
           </>
         );
-      });
-      if (
-        res.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
-      ) {
+      })
         return (
           <div className="songDisplay">
             <img className="albumCover" src={res.img_url} alt="" />
@@ -58,29 +41,15 @@ class Songs extends Component {
               <ul>{com}</ul>
             </div>
           </div>
-        );
-      } else {
-        return null;
-      }
-    });
+        )
+    })
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            value={this.state.input}
-            onChange={this.handleChange}
-            placeholder="Search Song"
-            className="find"
-          />
-          <input type="submit" value="Search By Title" />
-        </form>
         <br />
         <div>{songs}</div>
         <br />
       </>
-    );
-  }
+    )
 }
 
-export default Songs;
+export default Profile;

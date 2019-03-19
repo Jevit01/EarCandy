@@ -79,10 +79,27 @@ const getAllCommentsForOneSong = (req, res, next) => {
     });
 };
 
+const getAllSongsWithComments = (req, res, next) => {
+  db.any(
+    "SELECT songs.id, img_url, title, array_agg(DISTINCT comments.comment_body) AS comments FROM comments JOIN songs ON  songs.id = comments.songcom_id GROUP BY songs.id, img_url, title"
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "YOU GOT COMMENTS"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
 module.exports = {
   getAllComments,
   postComment,
   deleteComment,
   editComment,
-  getAllCommentsForOneSong
+  getAllCommentsForOneSong,
+  getAllSongsWithComments
 };
