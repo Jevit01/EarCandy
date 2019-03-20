@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PostForm from "./PostForm.js";
 const axios = require("axios");
 
 class Profile extends Component {
@@ -49,6 +50,8 @@ class Profile extends Component {
     return (
       <>
         <h2>{name[0]}</h2>
+        <br />
+        <PostForm />
         <br />
         <div>{songs}</div>
         <br />

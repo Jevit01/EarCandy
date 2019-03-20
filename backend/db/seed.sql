@@ -24,7 +24,8 @@ CREATE TABLE songs (
   title VARCHAR NOT NULL,
   img_url VARCHAR NOT NULL,
   user_id INT REFERENCES users(id),
-  genre_id INT REFERENCES genres(id)
+  genre_id INT REFERENCES genres(id),
+  posted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE favorites (
