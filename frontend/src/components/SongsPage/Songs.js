@@ -35,11 +35,15 @@ class Songs extends Component {
   render() {
     let songs = this.state.songs.map(res => {
       let com = res.comments.map(data => {
-        return (
-          <>
-            <li>{data}</li>
-          </>
-        );
+        if (data === null) {
+          return <>{""}</>;
+        } else {
+          return (
+            <>
+              <li>{data}</li>
+            </>
+          );
+        }
       });
       if (
         res.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0

@@ -48,7 +48,7 @@ class Profile extends Component {
     });
     return (
       <>
-        <h2>{name}</h2>
+        <h2>{name[0]}</h2>
         <br />
         <div>{songs}</div>
         <br />
