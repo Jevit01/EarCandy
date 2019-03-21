@@ -5,10 +5,12 @@ const {
   postFavorite,
   deleteFavorite,
   getAllFavoritesForOneUser,
-  getAllFavoritesForOneSong
+  getAllFavoritesForOneSong,
+  getAllUsersFavorites
 } = require("../db/Queries/favoritesQ.js");
 
 router.get("/", getAllFavorites);
+router.get("/user", getAllUsersFavorites);
 router.post("/", postFavorite);
 router.delete("/:id", deleteFavorite);
 router.get("/users/:id", getAllFavoritesForOneUser);

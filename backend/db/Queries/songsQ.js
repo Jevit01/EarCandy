@@ -113,7 +113,7 @@ const getSongsByUsers = (req, res, next) => {
 
 const getSongsForSampleUser = (req, res, next) => {
   db.any(
-    "SELECT array_agg(DISTINCT users.username) AS username, users.id, COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, posted_at FROM songs JOIN favorites ON songfav_id = songs.id JOIN comments ON songcom_id = songs.id JOIN users ON users.id = songs.user_id WHERE users.id = 1 GROUP BY users.id , songfav_id, title, img_url, posted_at ORDER BY posted_at DESC"
+    "SELECT array_agg(DISTINCT users.username) AS username, users.id, COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id FULL JOIN users ON users.id = songs.user_id WHERE users.id = 1 GROUP BY users.id , songfav_id, title, img_url, posted_at ORDER BY posted_at DESC"
   )
     .then(data => {
       res.status(200).json({

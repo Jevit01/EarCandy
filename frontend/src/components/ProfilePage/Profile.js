@@ -4,29 +4,76 @@ const axios = require("axios");
 
 class Profile extends Component {
   state = {
-    songs: []
+    songs: [],
+    fav: [],
+    showFav: false,
+    showPosts: false
   };
 
   componentDidMount() {
-    this.getUsersSongs();
+    this.showUsersPosts();
+    this.showFavorites();
   }
 
-  getUsersSongs = () => {
+  showUsersPosts = () => {
     axios.get("/songs/sample").then(songs => {
       this.setState({
-        songs: songs.data.data
+        songs: songs.data.data,
+        showPosts: !this.state.showPosts,
+        showFav: false
+      });
+    });
+  };
+
+  showFavorites = () => {
+    axios.get("/favorites/user").then(fav => {
+      this.setState({
+        fav: fav.data.data,
+        showFav: !this.state.showFav,
+        showPosts: false
       });
     });
   };
 
   render() {
+    let fav = this.state.fav.map(res => {
+      let com = res.comments.map(data => {
+        if (data === null) {
+          return <>{""}</>;
+        } else {
+          return (
+            <>
+              <li>{data}</li>
+            </>
+          );
+        }
+      });
+      return (
+        <div className="songDisplay">
+          <img className="albumCover" src={res.img_url} alt="" />
+          <div className="titleBar">
+            <h3 className="title">{res.title}</h3>
+          </div>
+          <div className="favButton">
+            <button className="fav">Unfavorite</button>
+          </div>
+          <div className="coms">
+            <ul>{com}</ul>
+          </div>
+        </div>
+      );
+    });
     let songs = this.state.songs.map(res => {
       let com = res.comments.map(data => {
-        return (
-          <>
-            <li>{data}</li>
-          </>
-        );
+        if (data === null) {
+          return <>{""}</>;
+        } else {
+          return (
+            <>
+              <li>{data}</li>
+            </>
+          );
+        }
       });
       return (
         <div className="songDisplay">
@@ -53,7 +100,10 @@ class Profile extends Component {
         <br />
         <PostForm />
         <br />
-        <div>{songs}</div>
+        <button onClick={this.showUsersPosts}>Posts</button>
+        <button onClick={this.showFavorites}>Favorites</button>
+        {this.state.showPosts ? <div>{songs}</div> : ""}
+        {this.state.showFav ? <div>{fav}</div> : ""}
         <br />
       </>
     );
