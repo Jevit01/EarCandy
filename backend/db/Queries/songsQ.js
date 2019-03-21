@@ -143,6 +143,22 @@ const getByPopular = (req, res, next) => {
     });
 };
 
+const getByGenre = (req, res, next) => {
+  db.any(
+    "SELECT COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, genre_name, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id FULL JOIN genres ON songs.genre_id = genres.id GROUP BY songfav_id, title, img_url, genre_name, posted_at"
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "GENRE?!"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
 module.exports = {
   getAllSongs,
   getOneSong,
@@ -152,5 +168,6 @@ module.exports = {
   getSongsByUsers,
   getAllSongsFavsAndComs,
   getSongsForSampleUser,
-  getByPopular
+  getByPopular,
+  getByGenre
 };

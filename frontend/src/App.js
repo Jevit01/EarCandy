@@ -6,6 +6,7 @@ import Songs from "./components/SongsPage/Songs.js";
 import NavBar from "./components/NavBar.js";
 import Profile from "./components/ProfilePage/Profile.js";
 import ByPopularity from "./components/PopularPage/ByPopularity.js";
+import ByGenre from "./components/GenrePage/ByGenre.js";
 
 class App extends Component {
   render() {
@@ -15,8 +16,9 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/songs" component={Songs} />
-          <Route path="/myprofile" component={Profile} />
           <Route path="/popularity" component={ByPopularity} />
+          <Route path="/genres" component={ByGenre} />
+          <Route path="/myprofile" component={Profile} />
         </Switch>
       </div>
     );

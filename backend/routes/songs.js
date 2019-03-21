@@ -9,11 +9,13 @@ const {
   getSongsByUsers,
   getAllSongsFavsAndComs,
   getSongsForSampleUser,
-  getByPopular
+  getByPopular,
+  getByGenre
 } = require("../db/Queries/songsQ.js");
 
 router.get("/", getAllSongs);
 router.post("/", postSong);
+router.get("/genre", getByGenre);
 router.get("/popular", getByPopular);
 router.get("/info", getAllSongsFavsAndComs);
 router.get("/sample", getSongsForSampleUser);
