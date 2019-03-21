@@ -127,6 +127,22 @@ const getSongsForSampleUser = (req, res, next) => {
     });
 };
 
+const getByPopular = (req, res, next) => {
+  db.any(
+    "SELECT COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id GROUP BY songfav_id, title, img_url, posted_at ORDER BY total DESC, posted_at DESC"
+  )
+    .then(data => {
+      res.status(200).json({
+        status: "Success",
+        data: data,
+        message: "POPULAR?!"
+      });
+    })
+    .catch(err => {
+      return next(err);
+    });
+};
+
 module.exports = {
   getAllSongs,
   getOneSong,
@@ -135,5 +151,6 @@ module.exports = {
   getSongByGenre,
   getSongsByUsers,
   getAllSongsFavsAndComs,
-  getSongsForSampleUser
+  getSongsForSampleUser,
+  getByPopular
 };
