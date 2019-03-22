@@ -10,17 +10,8 @@ class ByGenre extends Component {
   };
 
   componentDidMount() {
-    this.getSongs();
     this.getGenre();
   }
-
-  getSongs = () => {
-    axios.get("/songs/genre").then(songs => {
-      this.setState({
-        songs: songs.data.data
-      });
-    });
-  };
 
   getGenre = () => {
     axios.get("/genres").then(gen => {
@@ -33,32 +24,50 @@ class ByGenre extends Component {
   handleSelect = e => {
     this.setState({
       [e.target.name]: e.target.value,
-      submit: false
+      submit: true
     });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    this.setState({
-      submit: true
+    axios.get(`/songs/genres/${this.state.selectedGenre}`).then(songs => {
+      this.setState({
+        songs: songs.data.data,
+        submit: true
+      });
     });
+
+    if (this.state.selectedGenre === "0") {
+      let songs = this.state.songs.map(res => {
+        return (
+          <div key={res.id} className="songDisplay">
+            <img className="albumCover" src={res.img_url} alt="" />
+            <div className="titleBar">
+              <h3 className="title">{res.title}</h3>
+              <p className="totalFav">{res.total}</p>
+            </div>
+            <div className="favButton">
+              <button className="fav">Favorite</button>
+            </div>
+          </div>
+        );
+      });
+      return songs;
+    }
   };
 
   render() {
-    let songs = this.state.songs.map(res => {
-      let com = res.comments.map(data => {
-        if (data === null) {
-          return <>{""}</>;
-        } else {
-          return (
-            <>
-              <li>{data}</li>
-            </>
-          );
-        }
-      });
+    let genreList = this.state.genres.map(genre => {
       return (
-        <div className="songDisplay">
+        <option key={genre.id} value={genre.id}>
+          {genre.genre_name}
+        </option>
+      );
+    });
+
+    let songs = this.state.songs.map(res => {
+      return (
+        <div key={res.id} className="songDisplay">
           <img className="albumCover" src={res.img_url} alt="" />
           <div className="titleBar">
             <h3 className="title">{res.title}</h3>
@@ -67,27 +76,13 @@ class ByGenre extends Component {
           <div className="favButton">
             <button className="fav">Favorite</button>
           </div>
-          <div className="coms">
-            <ul>{com}</ul>
-          </div>
         </div>
       );
     });
-    let genreList = this.state.genres.map(genre => {
-      return (
-        <option key={genre.id} value={genre.genre_name}>
-          {genre.genre_name}
-        </option>
-      );
-    });
-    if (this.state.submit && this.state.selectedGenre) {
-      songs = this.state.songs.filter(song => {
-        return songs.genre_name === this.state.selectedGenre;
-      });
-    }
+
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
+        <form type="submit" onSubmit={this.handleSubmit}>
           <select name="selectedGenre" onChange={this.handleSelect}>
             <option key="0" value="">
               {" "}

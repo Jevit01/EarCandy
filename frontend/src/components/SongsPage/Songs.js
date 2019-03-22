@@ -49,19 +49,29 @@ class Songs extends Component {
         res.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
       ) {
         return (
-          <div className="songDisplay">
-            <img className="albumCover" src={res.img_url} alt="" />
-            <div className="titleBar">
-              <h3 className="title">{res.title}</h3>
-              <p className="totalFav">{res.total}</p>
+          <>
+            <div className="songDisplay">
+              <img className="albumCover" src={res.img_url} alt="" />
+              <div className="titleBar">
+                <h3 className="title">{res.title}</h3>
+                <p className="totalFav">{res.total}</p>
+              </div>
+              <div className="favButton">
+                <button className="fav">Favorite</button>
+              </div>
+              <div className="coms">
+                <ul>{com}</ul>
+              </div>
+              <div className="commentBox">
+                <form>
+                  <input type="text" />
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
             </div>
-            <div className="favButton">
-              <button className="fav">Favorite</button>
-            </div>
-            <div className="coms">
-              <ul>{com}</ul>
-            </div>
-          </div>
+            <br />
+            <br />
+          </>
         );
       } else {
         return null;

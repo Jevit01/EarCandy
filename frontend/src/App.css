@@ -20,7 +20,7 @@
 .songDisplay {
   display: grid;
   grid-template-columns: 10% 30% 5%;
-  grid-template-rows: 30% 40% 20% 20%;
+  grid-template-rows: 30% 60% 20%;
 }
 
 .albumCover {
@@ -53,4 +53,11 @@
 .coms {
   grid-column: 2;
   grid-row: 2;
+  word-wrap: normal;
+  overflow: scroll;
+}
+
+.commentBox {
+  grid-column: 2;
+  grid-row: 3;
 }

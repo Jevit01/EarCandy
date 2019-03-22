@@ -78,7 +78,7 @@ const deleteSong = (req, res, next) => {
 const getSongByGenre = (req, res, next) => {
   let genId = parseInt(req.params.id);
   db.any(
-    "SELECT songs.id, img_url, title, genre_name FROM songs JOIN genres ON  songs.genre_id = genres.id WHERE genres.id = $1 GROUP BY songs.id, img_url, title, genre_name",
+    "SELECT COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, genres.id, genre_name, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id FULL JOIN genres ON songs.genre_id = genres.id WHERE genres.id = $1 GROUP BY songfav_id, title, img_url, genres.id, genre_name, posted_at",
     [genId]
   )
     .then(data => {
@@ -145,7 +145,7 @@ const getByPopular = (req, res, next) => {
 
 const getByGenre = (req, res, next) => {
   db.any(
-    "SELECT COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, genre_name, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id FULL JOIN genres ON songs.genre_id = genres.id GROUP BY songfav_id, title, img_url, genre_name, posted_at"
+    "SELECT COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, genres.id, genre_name, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id FULL JOIN genres ON songs.genre_id = genres.id GROUP BY songfav_id, title, img_url, genres.id, genre_name, posted_at"
   )
     .then(data => {
       res.status(200).json({

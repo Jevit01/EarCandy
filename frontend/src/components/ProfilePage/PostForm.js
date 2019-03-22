@@ -7,8 +7,14 @@ class PostForm extends Component {
   state = {
     songImg: "",
     songTitle: "",
+    selectedGenre: "",
+    genres: [],
     sumbit: false
   };
+
+  componentDidMount() {
+    this.getGenre();
+  }
 
   handleImg = event => {
     this.setState({
@@ -22,26 +28,50 @@ class PostForm extends Component {
     });
   };
 
+  handleSelect = e => {
+    this.setState({
+      [e.target.name]: e.target.value,
+      submit: true
+    });
+  };
+
   handleSubmit = event => {
     event.preventDefault();
 
-    const { songImg, songTitle } = this.state;
+    const { songImg, songTitle, selectedGenre } = this.state;
 
     axios.post("/songs", {
       user_id: 1,
       img_url: songImg,
       title: songTitle,
-      genre_id: 5
+      genre_id: selectedGenre
     });
 
     this.setState({
       submit: true
     });
   };
+
+  getGenre = () => {
+    axios.get("/genres").then(gen => {
+      this.setState({
+        genres: gen.data.data
+      });
+    });
+  };
+
   render() {
     if (this.state.submitImgCheck) {
       return <Redirect to="/myprofile" component={Profile} />;
     }
+
+    let genreList = this.state.genres.map(genre => {
+      return (
+        <option key={genre.id} value={genre.id}>
+          {genre.genre_name}
+        </option>
+      );
+    });
 
     const { songImg, songTitle } = this.state;
     return (
@@ -63,6 +93,12 @@ class PostForm extends Component {
             onChange={this.handleText}
             placeholder="Title"
           />
+          <select name="selectedGenre" onChange={this.handleSelect}>
+            <option key="0" value="">
+              {" "}
+            </option>
+            {genreList}
+          </select>
           <button type="submit">Submit</button>
         </form>
       </div>
