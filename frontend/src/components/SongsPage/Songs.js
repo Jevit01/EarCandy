@@ -4,7 +4,11 @@ const axios = require("axios");
 class Songs extends Component {
   state = {
     songs: [],
-    input: ""
+    input: "",
+    commentInput: "",
+    comId: "",
+    submit: false,
+    comSubmit: false
   };
 
   componentDidMount() {
@@ -23,12 +27,41 @@ class Songs extends Component {
     this.setState({ input: e.target.value });
   };
 
+  handleCom = e => {
+    this.setState({
+      commentInput: e.target.value
+    });
+  };
+
+  handleComId = e => {
+    this.setState({
+      comId: e.target.id
+    });
+  };
+
+  handleCommentSubmit = e => {
+    e.preventDefault();
+    axios.post("/comments", {
+      comment_body: this.state.commentInput,
+      usercom_id: 1,
+      songcom_id: this.state.comId
+    });
+    this.setState({
+      comSubmit: true,
+      commentInput: this.state.commentInput
+    });
+  };
+
   handleSubmit = e => {
     e.preventDefault();
     this.state.songs.find(song => {
       return (
         song.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
       );
+    });
+    this.setState({
+      submit: true,
+      input: this.state.input
     });
   };
 
@@ -63,8 +96,15 @@ class Songs extends Component {
                 <ul>{com}</ul>
               </div>
               <div className="commentBox">
-                <form>
-                  <input type="text" />
+                <form onSubmit={this.handleCommentSubmit}>
+                  <input
+                    type="text"
+                    name="commentInput"
+                    id={res.id}
+                    value={this.state.commentInput}
+                    onChange={this.handleCom}
+                    placeholder="Enter Comment"
+                  />
                   <button type="submit">Submit</button>
                 </form>
               </div>
