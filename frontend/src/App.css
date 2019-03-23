@@ -3,11 +3,13 @@
 }
 
 .topBar {
+  background-color: #d1d1d1;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   height: 75px;
   width: 100%;
+  border-bottom: solid #00f281;
 }
 
 .nav {
@@ -15,9 +17,12 @@
   justify-content: space-between;
   justify-content: flex-end;
   width: 500px;
+  margin-top: 20px;
+  margin-right: 10px;
 }
 
 .songDisplay {
+  justify-content: center;
   display: grid;
   grid-template-columns: 10% 30% 5%;
   grid-template-rows: 30% 60% 20%;
@@ -60,4 +65,51 @@
 .commentBox {
   grid-column: 2;
   grid-row: 3;
+}
+
+.username {
+  color: white;
+  font-family: "Playfair Display", serif;
+}
+
+body {
+  background-color: #621389;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  height: 20px;
+}
+
+a:hover {
+  background-color: #00f281;
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+}
+
+h2 {
+  font-family: "Amatic SC", cursive;
+  color: white;
+}
+
+ul,
+li {
+  list-style: none;
+  color: white;
+  font-family: "Playfair Display", serif;
+}
+
+p {
+  color: white;
+}
+
+.homeHeader {
+  color: white;
+}
+
+.logo:hover {
+  height: 100%;
 }

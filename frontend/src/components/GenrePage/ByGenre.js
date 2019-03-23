@@ -39,6 +39,17 @@ class ByGenre extends Component {
 
     if (this.state.selectedGenre === "0") {
       let songs = this.state.songs.map(res => {
+        let com = res.comments.map(data => {
+          if (data === null) {
+            return <>{""}</>;
+          } else {
+            return (
+              <>
+                <li>{data}</li>
+              </>
+            );
+          }
+        });
         return (
           <div key={res.id} className="songDisplay">
             <img className="albumCover" src={res.img_url} alt="" />
@@ -48,6 +59,9 @@ class ByGenre extends Component {
             </div>
             <div className="favButton">
               <button className="fav">Favorite</button>
+            </div>
+            <div className="coms">
+              <ul>{com}</ul>
             </div>
           </div>
         );

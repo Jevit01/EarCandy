@@ -35,7 +35,7 @@ class ByPopularity extends Component {
         <div className="songDisplay">
           <img className="albumCover" src={res.img_url} alt="" />
           <div className="titleBar">
-            <h3 className="title">{res.title}</h3>
+            <h2 className="title">{res.title}</h2>
             <p className="totalFav">{res.total}</p>
           </div>
           <div className="favButton">

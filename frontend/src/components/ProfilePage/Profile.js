@@ -52,7 +52,7 @@ class Profile extends Component {
         <div className="songDisplay">
           <img className="albumCover" src={res.img_url} alt="" />
           <div className="titleBar">
-            <h3 className="title">{res.title}</h3>
+            <h2 className="title">{res.title}</h2>
           </div>
           <div className="favButton">
             <button className="fav">Unfavorite</button>
@@ -79,7 +79,7 @@ class Profile extends Component {
         <div className="songDisplay">
           <img className="albumCover" src={res.img_url} alt="" />
           <div className="titleBar">
-            <h3 className="title">{res.title}</h3>
+            <h2 className="title">{res.title}</h2>
             <p className="totalFav">{res.total}</p>
           </div>
           <div className="favButton">
@@ -96,7 +96,7 @@ class Profile extends Component {
     });
     return (
       <>
-        <h2>{name[0]}</h2>
+        <h2 className="username">{name[0]}</h2>
         <br />
         <PostForm />
         <br />

@@ -6,7 +6,9 @@ const NavBar = () => {
   return (
     <>
       <div className="topBar">
-        <h2>Earworm</h2>
+        <Link to="/" className="logo">
+          <h1>Earworm</h1>
+        </Link>
         <nav className="nav">
           <Link to="/">Home</Link>
           <Link to="/songs">All Songs</Link>
