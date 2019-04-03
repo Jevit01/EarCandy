@@ -30,8 +30,12 @@ const postFavorite = (req, res, next) => {
 };
 
 const deleteFavorite = (req, res, next) => {
-  let favId = parseInt(req.params.id);
-  db.result("DELETE FROM favorites WHERE id=$1", [favId])
+  let songId = parseInt(req.params.song);
+  let userId = parseInt(req.params.user);
+  db.result("DELETE FROM favorites WHERE songfav_id=$1 AND userfav_id=$2", [
+    songId,
+    userId
+  ])
     .then(result => {
       res.status(200).json({
         status: "Success",

@@ -1,14 +1,13 @@
 import React, { Component } from "react";
+import CommentsForm from "../CommentsForm.js";
+import FavoriteButton from "../FavoriteButton.js";
 const axios = require("axios");
 
 class Songs extends Component {
   state = {
     songs: [],
     input: "",
-    commentInput: "",
-    comId: "",
-    submit: false,
-    comSubmit: false
+    submit: false
   };
 
   componentDidMount() {
@@ -27,57 +26,15 @@ class Songs extends Component {
     this.setState({ input: e.target.value });
   };
 
-  handleCom = e => {
-    this.setState({
-      commentInput: e.target.value
-    });
-  };
-
-  handleComId = e => {
-    this.setState({
-      comId: e.target.id
-    });
-  };
-
-  handleCommentSubmit = e => {
-    e.preventDefault();
-    axios.post("/comments", {
-      comment_body: this.state.commentInput,
-      usercom_id: 1,
-      songcom_id: this.state.comId
-    });
-    this.setState({
-      comSubmit: true,
-      commentInput: this.state.commentInput
-    });
-  };
-
   handleSubmit = e => {
     e.preventDefault();
-    this.state.songs.find(song => {
-      return (
-        song.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
-      );
-    });
     this.setState({
-      submit: true,
-      input: this.state.input
+      input: ""
     });
   };
 
   render() {
     let songs = this.state.songs.map(res => {
-      let com = res.comments.map(data => {
-        if (data === null) {
-          return <>{""}</>;
-        } else {
-          return (
-            <>
-              <li>{data}</li>
-            </>
-          );
-        }
-      });
       if (
         res.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
       ) {
@@ -90,24 +47,10 @@ class Songs extends Component {
                 <p className="totalFav">{res.total}</p>
               </div>
               <div className="favButton">
-                <button className="fav">Favorite</button>
+                <FavoriteButton songId={res.id} />
               </div>
-              <div className="coms">
-                <ul>{com}</ul>
-              </div>
-              <div className="commentBox">
-                <form onSubmit={this.handleCommentSubmit}>
-                  <input
-                    type="text"
-                    name="commentInput"
-                    id={res.id}
-                    value={this.state.commentInput}
-                    onChange={this.handleCom}
-                    placeholder="Enter Comment"
-                  />
-                  <button type="submit">Submit</button>
-                </form>
-              </div>
+
+              <CommentsForm songId={res.id} comments={res.comments} />
             </div>
             <br />
             <br />

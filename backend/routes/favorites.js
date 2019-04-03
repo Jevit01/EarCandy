@@ -12,7 +12,7 @@ const {
 router.get("/", getAllFavorites);
 router.get("/user", getAllUsersFavorites);
 router.post("/", postFavorite);
-router.delete("/:id", deleteFavorite);
+router.delete("/:song/:user", deleteFavorite);
 router.get("/users/:id", getAllFavoritesForOneUser);
 router.get("/songs/:id", getAllFavoritesForOneSong);
 

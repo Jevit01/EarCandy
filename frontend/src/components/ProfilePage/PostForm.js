@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import Profile from "./Profile";
 const axios = require("axios");
 
 class PostForm extends Component {
@@ -30,8 +28,7 @@ class PostForm extends Component {
 
   handleSelect = e => {
     this.setState({
-      [e.target.name]: e.target.value,
-      submit: true
+      [e.target.name]: e.target.value
     });
   };
 
@@ -40,16 +37,23 @@ class PostForm extends Component {
 
     const { songImg, songTitle, selectedGenre } = this.state;
 
-    axios.post("/songs", {
-      user_id: 1,
-      img_url: songImg,
-      title: songTitle,
-      genre_id: selectedGenre
-    });
-
-    this.setState({
-      submit: true
-    });
+    axios
+      .post("/songs", {
+        user_id: 1,
+        img_url: songImg,
+        title: songTitle,
+        genre_id: selectedGenre
+      })
+      .then(() => {
+        this.setState({
+          songImg: "",
+          songTitle: "",
+          selectedGenre: ""
+        });
+      })
+      .then(() => {
+        this.props.showUsersPosts();
+      });
   };
 
   getGenre = () => {
@@ -61,10 +65,6 @@ class PostForm extends Component {
   };
 
   render() {
-    if (this.state.submitImgCheck) {
-      return <Redirect to="/myprofile" component={Profile} />;
-    }
-
     let genreList = this.state.genres.map(genre => {
       return (
         <option key={genre.id} value={genre.id}>
@@ -93,7 +93,11 @@ class PostForm extends Component {
             onChange={this.handleText}
             placeholder="Title"
           />
-          <select name="selectedGenre" onChange={this.handleSelect}>
+          <select
+            name="selectedGenre"
+            onChange={this.handleSelect}
+            value={this.state.selectedGenre}
+          >
             <option key="0" value="">
               {" "}
             </option>

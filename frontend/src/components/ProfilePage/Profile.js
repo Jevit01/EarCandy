@@ -6,21 +6,20 @@ class Profile extends Component {
   state = {
     songs: [],
     fav: [],
-    showFav: false,
-    showPosts: false
+    // showFav: false,
+    // showPosts: false
+    compDisplay: ""
   };
 
   componentDidMount() {
     this.showUsersPosts();
-    this.showFavorites();
   }
 
   showUsersPosts = () => {
     axios.get("/songs/sample").then(songs => {
       this.setState({
         songs: songs.data.data,
-        showPosts: !this.state.showPosts,
-        showFav: false
+        compDisplay: "posts"
       });
     });
   };
@@ -29,40 +28,12 @@ class Profile extends Component {
     axios.get("/favorites/user").then(fav => {
       this.setState({
         fav: fav.data.data,
-        showFav: !this.state.showFav,
-        showPosts: false
+        compDisplay: "favs"
       });
     });
   };
 
   render() {
-    let fav = this.state.fav.map(res => {
-      let com = res.comments.map(data => {
-        if (data === null) {
-          return <>{""}</>;
-        } else {
-          return (
-            <>
-              <li>{data}</li>
-            </>
-          );
-        }
-      });
-      return (
-        <div className="songDisplay">
-          <img className="albumCover" src={res.img_url} alt="" />
-          <div className="titleBar">
-            <h2 className="title">{res.title}</h2>
-          </div>
-          <div className="favButton">
-            <button className="fav">Unfavorite</button>
-          </div>
-          <div className="coms">
-            <ul>{com}</ul>
-          </div>
-        </div>
-      );
-    });
     let songs = this.state.songs.map(res => {
       let com = res.comments.map(data => {
         if (data === null) {
@@ -91,6 +62,33 @@ class Profile extends Component {
         </div>
       );
     });
+    let fav = this.state.fav.map(res => {
+      let com = res.comments.map(data => {
+        if (data === null) {
+          return <>{""}</>;
+        } else {
+          return (
+            <>
+              <li>{data}</li>
+            </>
+          );
+        }
+      });
+      return (
+        <div className="songDisplay">
+          <img className="albumCover" src={res.img_url} alt="" />
+          <div className="titleBar">
+            <h2 className="title">{res.title}</h2>
+          </div>
+          <div className="favButton">
+            <button className="fav">Unfavorite</button>
+          </div>
+          <div className="coms">
+            <ul>{com}</ul>
+          </div>
+        </div>
+      );
+    });
     let name = this.state.songs.map(res => {
       return res.username;
     });
@@ -98,12 +96,12 @@ class Profile extends Component {
       <>
         <h2 className="username">{name[0]}</h2>
         <br />
-        <PostForm />
+        <PostForm showUsersPosts={this.showUsersPosts} />
         <br />
         <button onClick={this.showUsersPosts}>Posts</button>
         <button onClick={this.showFavorites}>Favorites</button>
-        {this.state.showPosts ? <div>{songs}</div> : ""}
-        {this.state.showFav ? <div>{fav}</div> : ""}
+        {this.state.compDisplay === "posts" ? <div>{songs}</div> : ""}
+        {this.state.compDisplay === "favs" ? <div>{fav}</div> : ""}
         <br />
       </>
     );

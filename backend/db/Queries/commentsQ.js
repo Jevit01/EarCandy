@@ -15,6 +15,7 @@ const getAllComments = (req, res, next) => {
 };
 
 const postComment = (req, res, next) => {
+  console.log(req.body);
   db.none(
     "INSERT INTO comments (comment_body, usercom_id, songcom_id) VALUES (${comment_body}, ${usercom_id}, ${songcom_id})",
     req.body
@@ -64,7 +65,7 @@ const editComment = (req, res) => {
 const getAllCommentsForOneSong = (req, res, next) => {
   let comId = parseInt(req.params.id);
   db.one(
-    "SELECT songs.id, img_url, title, array_agg(DISTINCT comments.comment_body) AS comments FROM comments JOIN songs ON  songs.id = comments.songcom_id WHERE songs.id = $1 GROUP BY songs.id, img_url, title",
+    "SELECT comments.id, songs.id, img_url, title, array_agg(DISTINCT comments.comment_body) AS comments FROM comments JOIN songs ON  songs.id = comments.songcom_id WHERE songs.id = $1 GROUP BY comments.id, songs.id, img_url, title ORDER BY comments.id ASC",
     [comId]
   )
     .then(data => {

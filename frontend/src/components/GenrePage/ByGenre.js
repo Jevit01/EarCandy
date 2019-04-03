@@ -23,8 +23,7 @@ class ByGenre extends Component {
 
   handleSelect = e => {
     this.setState({
-      [e.target.name]: e.target.value,
-      submit: true
+      [e.target.name]: e.target.value
     });
   };
 
@@ -36,52 +35,27 @@ class ByGenre extends Component {
         submit: true
       });
     });
-
-    if (this.state.selectedGenre === "0") {
-      let songs = this.state.songs.map(res => {
-        let com = res.comments.map(data => {
-          if (data === null) {
-            return <>{""}</>;
-          } else {
-            return (
-              <>
-                <li>{data}</li>
-              </>
-            );
-          }
-        });
-        return (
-          <div key={res.id} className="songDisplay">
-            <img className="albumCover" src={res.img_url} alt="" />
-            <div className="titleBar">
-              <h3 className="title">{res.title}</h3>
-              <p className="totalFav">{res.total}</p>
-            </div>
-            <div className="favButton">
-              <button className="fav">Favorite</button>
-            </div>
-            <div className="coms">
-              <ul>{com}</ul>
-            </div>
-          </div>
-        );
-      });
-      return songs;
-    }
   };
 
   render() {
     let genreList = this.state.genres.map(genre => {
-      return (
-        <option key={genre.id} value={genre.id}>
-          {genre.genre_name}
-        </option>
-      );
+      return <option value={genre.id}>{genre.genre_name}</option>;
     });
 
     let songs = this.state.songs.map(res => {
+      let com = res.comments.map(data => {
+        if (data === null) {
+          return <>{""}</>;
+        } else {
+          return (
+            <>
+              <li>{data}</li>
+            </>
+          );
+        }
+      });
       return (
-        <div key={res.id} className="songDisplay">
+        <div className="songDisplay">
           <img className="albumCover" src={res.img_url} alt="" />
           <div className="titleBar">
             <h3 className="title">{res.title}</h3>
@@ -89,6 +63,9 @@ class ByGenre extends Component {
           </div>
           <div className="favButton">
             <button className="fav">Favorite</button>
+          </div>
+          <div className="coms">
+            <ul>{com}</ul>
           </div>
         </div>
       );
@@ -98,9 +75,7 @@ class ByGenre extends Component {
       <>
         <form type="submit" onSubmit={this.handleSubmit}>
           <select name="selectedGenre" onChange={this.handleSelect}>
-            <option key="0" value="">
-              {" "}
-            </option>
+            <option value=""> </option>
             {genreList}
           </select>
           <button type="submit">Submit</button>
