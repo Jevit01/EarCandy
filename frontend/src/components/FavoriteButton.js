@@ -29,15 +29,29 @@ class FavoriteButton extends Component {
         this.setState({
           fav: true
         });
+      })
+      .then(() => {
+        this.getAllFavorites();
+      })
+      .then(() => {
+        this.props.songData();
       });
   };
 
   unFavoriteSong = () => {
-    axios.delete(`/favorites/${this.props.songId}/1`).then(() => {
-      this.setState({
-        fav: false
+    axios
+      .delete(`/favorites/${this.props.songId}/1`)
+      .then(() => {
+        this.setState({
+          fav: false
+        });
+      })
+      .then(() => {
+        this.getAllFavorites();
+      })
+      .then(() => {
+        this.props.songData();
       });
-    });
   };
 
   render() {
@@ -46,9 +60,15 @@ class FavoriteButton extends Component {
     });
     return (
       <>
-        <button onClick={this.state.fav ? this.unFavoriteSong : this.favSong}>
-          {this.props.songId === favorite ? "Unfavorite" : "Favorite"}
-        </button>
+        {this.state.fav ? (
+          <button onClick={this.unFavoriteSong}>
+            {favorite.includes(this.props.songId) ? "Unfavorite" : "Favorite"}
+          </button>
+        ) : (
+          <button onClick={this.favSong}>
+            {favorite.includes(this.props.songId) ? "Unfavorite" : "Favorite"}
+          </button>
+        )}
       </>
     );
   }

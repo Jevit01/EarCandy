@@ -31,7 +31,7 @@ const getAllSongs = (req, res, next) => {
 
 const getAllSongsFavsAndComs = (req, res, next) => {
   db.any(
-    "SELECT songs.id, COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id GROUP BY songs.id, songfav_id, title, img_url, posted_at ORDER BY posted_at DESC"
+    "SELECT users.id AS users, username, songs.id, COUNT(DISTINCT userfav_id) AS total, title, img_url, array_agg(DISTINCT comments.comment_body) AS comments, posted_at FROM songs FULL JOIN favorites ON songfav_id = songs.id FULL JOIN comments ON songcom_id = songs.id FULL JOIN users ON users.id = user_id GROUP BY users, username, songs.id, songfav_id, title, img_url, posted_at ORDER BY posted_at DESC"
   )
     .then(data => {
       res.status(200).json({

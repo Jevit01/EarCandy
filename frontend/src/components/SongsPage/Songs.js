@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import CommentsForm from "../CommentsForm.js";
-import FavoriteButton from "../FavoriteButton.js";
+import SongDisplay from "../SongDisplay.js";
 const axios = require("axios");
 
 class Songs extends Component {
   state = {
     songs: [],
+    songDisplay: [],
     input: "",
     submit: false
   };
@@ -17,7 +17,8 @@ class Songs extends Component {
   getSongs = () => {
     axios.get("/songs/info").then(songs => {
       this.setState({
-        songs: songs.data.data
+        songs: songs.data.data,
+        songDisplay: songs.data.data
       });
     });
   };
@@ -28,36 +29,36 @@ class Songs extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    let search = this.state.songs.filter(song => {
+      return song.title.toLowerCase().includes(this.state.input.toLowerCase());
+    });
     this.setState({
-      input: ""
+      input: "",
+      songDisplay: search
     });
   };
 
   render() {
-    let songs = this.state.songs.map(res => {
-      if (
-        res.title.toLowerCase().indexOf(this.state.input.toLowerCase()) === 0
-      ) {
+    let songs = this.state.songDisplay.map(res => {
+      if (res.id === null) {
+        return "";
+      } else {
         return (
           <>
             <div key={res.id} className="songDisplay">
-              <img className="albumCover" src={res.img_url} alt="" />
-              <div className="titleBar">
-                <h2 className="title">{res.title}</h2>
-                <p className="totalFav">{res.total}</p>
-              </div>
-              <div className="favButton">
-                <FavoriteButton songId={res.id} />
-              </div>
-
-              <CommentsForm songId={res.id} comments={res.comments} />
+              <SongDisplay
+                image={res.img_url}
+                title={res.title}
+                favTotal={res.total}
+                songId={res.id}
+                songData={this.getSongs}
+                comments={res.comments}
+              />
             </div>
             <br />
             <br />
           </>
         );
-      } else {
-        return null;
       }
     });
     return (

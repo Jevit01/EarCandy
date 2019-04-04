@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import PostForm from "./PostForm.js";
+import SongDisplay from "../SongDisplay.js";
 const axios = require("axios");
 
 class Profile extends Component {
   state = {
+    mySongs: [],
     songs: [],
+    users: [],
     fav: [],
     // showFav: false,
     // showPosts: false
@@ -13,12 +16,30 @@ class Profile extends Component {
 
   componentDidMount() {
     this.showUsersPosts();
+    this.getSongs();
+    this.getUsers();
   }
 
-  showUsersPosts = () => {
-    axios.get("/songs/sample").then(songs => {
+  getUsers = () => {
+    axios.get("/users/").then(user => {
       this.setState({
-        songs: songs.data.data,
+        users: user.data.data
+      });
+    });
+  };
+
+  getSongs = () => {
+    axios.get("/songs/info").then(songs => {
+      this.setState({
+        songs: songs.data.data
+      });
+    });
+  };
+
+  showUsersPosts = () => {
+    axios.get("/songs/info").then(songs => {
+      this.setState({
+        mySongs: songs.data.data,
         compDisplay: "posts"
       });
     });
@@ -35,66 +56,53 @@ class Profile extends Component {
 
   render() {
     let songs = this.state.songs.map(res => {
-      let com = res.comments.map(data => {
-        if (data === null) {
-          return <>{""}</>;
-        } else {
-          return (
-            <>
-              <li>{data}</li>
-            </>
-          );
-        }
-      });
-      return (
-        <div className="songDisplay">
-          <img className="albumCover" src={res.img_url} alt="" />
-          <div className="titleBar">
-            <h2 className="title">{res.title}</h2>
-            <p className="totalFav">{res.total}</p>
-          </div>
-          <div className="favButton">
-            <button className="fav">Favorite</button>
-          </div>
-          <div className="coms">
-            <ul>{com}</ul>
-          </div>
-        </div>
-      );
+      if (res.users === 1) {
+        return (
+          <>
+            <div key={res.id} className="songDisplay">
+              <SongDisplay
+                image={res.img_url}
+                title={res.title}
+                favTotal={res.total}
+                songId={res.id}
+                songData={this.getSongs}
+                comments={res.comments}
+              />
+            </div>
+            <br />
+            <br />
+          </>
+        );
+      }
     });
     let fav = this.state.fav.map(res => {
-      let com = res.comments.map(data => {
-        if (data === null) {
-          return <>{""}</>;
-        } else {
-          return (
-            <>
-              <li>{data}</li>
-            </>
-          );
-        }
-      });
       return (
-        <div className="songDisplay">
-          <img className="albumCover" src={res.img_url} alt="" />
-          <div className="titleBar">
-            <h2 className="title">{res.title}</h2>
+        <>
+          <div key={res.id} className="songDisplay">
+            <SongDisplay
+              image={res.img_url}
+              title={res.title}
+              favTotal={res.total}
+              songId={res.id}
+              songData={this.getSongs}
+              comments={res.comments}
+            />
           </div>
-          <div className="favButton">
-            <button className="fav">Unfavorite</button>
-          </div>
-          <div className="coms">
-            <ul>{com}</ul>
-          </div>
-        </div>
+          <br />
+          <br />
+        </>
       );
     });
-    let name = this.state.songs.map(res => {
-      return res.username;
+    let nameSearch = this.state.users.map(res => {
+      if (res.id === 1) {
+        return res.username;
+      }
+      return nameSearch;
     });
+
     return (
       <>
-        <h2 className="username">{name[0]}</h2>
+        <h2 className="username">{nameSearch}</h2>
         <br />
         <PostForm showUsersPosts={this.showUsersPosts} />
         <br />
