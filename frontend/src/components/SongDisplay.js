@@ -11,7 +11,11 @@ const SongDisplay = props => {
         <p className="totalFav">{props.favTotal}</p>
       </div>
       <div className="favButton">
-        <FavoriteButton songId={props.songId} songData={props.songData} />
+        <FavoriteButton
+          songId={props.songId}
+          songData={props.songData}
+          popularSongs={props.popularSongs}
+        />
       </div>
       <CommentsForm songId={props.songId} comments={props.comments} />
     </>

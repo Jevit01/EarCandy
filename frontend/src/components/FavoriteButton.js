@@ -35,6 +35,7 @@ class FavoriteButton extends Component {
       })
       .then(() => {
         this.props.songData();
+        this.props.popularSongs();
       });
   };
 
@@ -51,6 +52,7 @@ class FavoriteButton extends Component {
       })
       .then(() => {
         this.props.songData();
+        this.props.popularSongs();
       });
   };
 
