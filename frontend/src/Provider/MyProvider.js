@@ -13,14 +13,46 @@ class MyProvider extends Component {
     selectedGenre: "",
     submit: false,
     input: "",
-    submit: false
+    submit: false,
+    users: [],
+    mySongs: [],
+    compDisplay: "",
+    fav: []
   };
 
   componentDidMount() {
     this.getSongs();
     this.getPopularSongs();
     this.getGenre();
+    this.getUsers();
+    this.showUsersPosts();
   }
+
+  getUsers = () => {
+    axios.get("/users/").then(user => {
+      this.setState({
+        users: user.data.data
+      });
+    });
+  };
+
+  showUsersPosts = () => {
+    axios.get("/songs/info").then(songs => {
+      this.setState({
+        mySongs: songs.data.data,
+        compDisplay: "posts"
+      });
+    });
+  };
+
+  showFavorites = () => {
+    axios.get("/favorites/user").then(fav => {
+      this.setState({
+        fav: fav.data.data,
+        compDisplay: "favs"
+      });
+    });
+  };
 
   getSongs = () => {
     axios.get("/songs/info").then(songs => {
@@ -172,6 +204,54 @@ class MyProvider extends Component {
     return songs;
   };
 
+  usersSongs = () => {
+    let songs = this.state.songs.map(res => {
+      if (res.users === 1) {
+        return (
+          <>
+            <div key={res.id} className="songDisplay">
+              <SongDisplay
+                image={res.img_url}
+                title={res.title}
+                favTotal={res.total}
+                songId={res.id}
+                songData={this.getSongs}
+                popularSongs={this.getPopularSongs}
+                comments={res.comments}
+              />
+            </div>
+            <br />
+            <br />
+          </>
+        );
+      }
+    });
+    return songs;
+  };
+
+  fav = () => {
+    let fav = this.state.fav.map(res => {
+      return (
+        <>
+          <div key={res.id} className="songDisplay">
+            <SongDisplay
+              image={res.img_url}
+              title={res.title}
+              favTotal={res.total}
+              songId={res.id}
+              songData={this.getSongs}
+              popularSongs={this.getPopularSongs}
+              comments={res.comments}
+            />
+          </div>
+          <br />
+          <br />
+        </>
+      );
+    });
+    return fav;
+  };
+
   render() {
     return (
       <MyContext.Provider
@@ -186,7 +266,12 @@ class MyProvider extends Component {
             popularSongs: this.popularSongs,
             genreList: this.genreList,
             genreDisplay: this.genreDisplay,
-            handleSelect: this.handleSelect
+            handleSelect: this.handleSelect,
+            getUsers: this.getUsers,
+            showUsersPosts: this.showUsersPosts,
+            showFavorites: this.showFavorites,
+            usersSongs: this.usersSongs,
+            fav: this.fav
           }
         }}
       >
