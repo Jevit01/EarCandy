@@ -1,10 +1,12 @@
 import React from "react";
+import image from "./image/maggieheadphone.jpg";
 
 const Home = () => {
   return (
     <div className="home">
       <br />
-      <h1 className="homeHeader">EarCandy</h1>
+
+      <img className="homeimage" src={image} alt="" />
     </div>
   );
 };

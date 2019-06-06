@@ -113,3 +113,8 @@ p {
 .logo:hover {
   height: 100%;
 }
+
+.homeimage {
+  width: 800px;
+  height: 800px;
+}
