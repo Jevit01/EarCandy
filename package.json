@@ -19,6 +19,7 @@
     "concurrently": "^4.1.0",
     "heroku": "^7.25.0",
     "node": "^12.4.0",
+    "react": "^16.8.6",
     "react-router-dom": "^4.4.0"
   }
 }
