@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS earworm;
-CREATE DATABASE earworm;
-
-\c earworm;
 
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS genres;
